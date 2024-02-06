@@ -20,7 +20,7 @@ export const signUp = async (req, res, next) => {
     subject: "Saraha Verification",
     message: `<h1>-Verify Code </h1>
     <p>go this link for verify account </p>
-    <a href="http://localhost:3000/api/v1/auth/verify/${emailToken}">verify</a>
+    <a href="https://sarahaapp-bhyh.onrender.com/api/v1/auth/verify/${emailToken}">verify</a>
     `,
   });
   if (!sendCode)
@@ -126,7 +126,7 @@ export const updateAccount = async (req, res,next) => {
     subject: "Saraha Verification",
     message: `<h1>-Verify Code </h1>
     <p>go this link for verify account </p>
-    <a href="http://localhost:3000/api/v1/auth/verify/${emailToken}">verify</a>
+    <a href="https://sarahaapp-bhyh.onrender.com/api/v1/auth/verify/${emailToken}">verify</a>
     `,
   });
   if (!sendCode)  return next(new Error("send code to email fail", { cause: 400 }));
