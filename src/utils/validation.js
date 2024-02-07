@@ -18,7 +18,7 @@ const validation = {
     "content-length":Joi.string(),
     "connection":Joi.string(),
     "host":Joi.string(),
-  }),
+  }).options({allowUnknown:true}),
   params:validateId
 }
 
