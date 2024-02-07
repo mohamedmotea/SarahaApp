@@ -9,7 +9,7 @@ export const signUp = async (req, res, next) => {
   const { userName, email, password, gender } = req.body;
   // check this name is valid
   const check = await User.findOne({ email });
-  if (check) return next(new Error("email is already exist", { cause: 409 }));
+  if (check) return res.status(409).json({message:'email is already exist',success: false})
   // verify the email
   const emailToken = jwt.sign({ email }, process.env.VERIFICATION, {
     expiresIn: "2m",
@@ -24,11 +24,11 @@ export const signUp = async (req, res, next) => {
     `,
   });
   if (!sendCode)
-    return next(new Error("send code to email fail", { cause: 400 }));
+    return res.status(400).json({message:'send code to email fail',success: false})
   // hashed password
   const hashPassword = bcrypt.hashSync(password, +process.env.SALT_ROUNDES);
   if (!hashPassword)
-    return next(new Error("check you type of password", { cause: 400 }));
+    return  res.status(400).json({message:'check you type of password',success: false}) 
 
   const newUser = new User({
     userName,
@@ -37,7 +37,7 @@ export const signUp = async (req, res, next) => {
     gender,
   });
   await newUser.save();
-  if (!newUser) return next(new Error("user created fail", { cause: 400 }));
+  if (!newUser) return res.status(400).json({message:'user created fail',success: false}) 
 
   res
     .status(201)
@@ -48,7 +48,7 @@ export const verify = async (req, res, next) => {
   const { token } = req.params;
   const decodeEmail = jwt.verify(token, process.env.VERIFICATION);
   const user = await User.findOne({ email: decodeEmail.email });
-  if (!user) return next(new Error("user not found", { cause: 404 }));
+  if (!user) return res.status(404).json({message:'user not found',success: false})  
   user.isEmailVerified = true;
   await user.save();
   res
@@ -61,12 +61,28 @@ export const signIn = async (req, res, next) => {
   const { email, password } = req.body;
   // check this name is valid
   const user = await User.findOne({ email });
-  if (!user) return next(new Error("email is not exist", { cause: 404 }));
+  if (!user) return res.status(404).json({message:'email is not exist',success: false}) 
   // verify the password
   const isMatch = bcrypt.compareSync(password, user.password);
-  if (!isMatch)  return next(new Error("check you type of password", { cause: 400 }));
+  if (!isMatch)  return res.status(400).json({message:'check you type of password',success: false});
   // verify the email verification
-  if(!user.isEmailVerified ) return next(new Error('email verification is not valid', { cause: 400 }));
+  if(!user.isEmailVerified ) {
+    // verify the email
+  const emailToken = jwt.sign({ email }, process.env.VERIFICATION, {
+    expiresIn: "2m",
+  });
+  // send code to email
+  const sendCode = await sendEmailService({
+    to: email,
+    subject: "Saraha Verification",
+    message: `<h1>-Verify Code </h1>
+    <p>go this link for verify account </p>
+    <a href="https://sarahaapp-bhyh.onrender.com/api/v1/auth/verify/${emailToken}">verify</a>
+    `,
+  });
+  if (!sendCode)
+    return res.status(400).json({message:'email verification is not valid',success: false}) ;
+  } 
   // create token
   const token = jwt.sign(
     {
@@ -115,7 +131,7 @@ export const updateAccount = async (req, res,next) => {
   const user = await User.findById(id)
   if(email) {
     const check = await User.findOne({email})
-    if(check) return next(new Error("email is already exist", { cause: 409 }))
+    if(check) return res.status(409).json({message:'email is already exist',success: false});
     // verify the email
     const emailToken = jwt.sign({ email }, process.env.VERIFICATION, {
       expiresIn: "2m",
