@@ -110,7 +110,7 @@ export const profilePicture = async (req,res,next)=>{
   // desturture the id from authentication
   const {id} = req.user
   // check if the user uploaded a picture
-  if(!req.file) return next(new Error('uploud picture required',{cause:404}))
+  // if(!req.file) return next(new Error('uploud picture required',{cause:404}))
   // upload to cloudinary
   const {secure_url,public_id} = await cloudinaryConnection().uploader.upload(req.file.path,{
   folder:`${process.env.MAIN_FOLDER}/user/${id}` 
