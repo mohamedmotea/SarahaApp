@@ -129,7 +129,7 @@ export const updateAccount = async (req, res,next) => {
   const { userName, email, newPassword, gender } = req.body;
   const {id} = req.user
   const user = await User.findById(id)
-  if(email) {
+  if(email && email.length > 0) {
     const check = await User.findOne({email})
     if(check) return res.status(409).json({message:'email is already exist',success: false});
     // verify the email
@@ -149,14 +149,14 @@ export const updateAccount = async (req, res,next) => {
     user.email = email
   }
 
-  if(newPassword){
+  if(newPassword && newPassword.length > 0){
     // hashed password
     const hashPassword = bcrypt.hashSync(newPassword, +process.env.SALT_ROUNDES);
     if (!hashPassword)  return next(new Error("check you type of password", { cause: 400 }));
     user.password = hashPassword
   }
   if(gender) user.gender = gender
-  if(userName) user.userName = userName
+  if(userName && userName.length > 0) user.userName = userName
 
   await user.save()
   if (!user) return next(new Error("user updated fail", { cause: 400 }));
