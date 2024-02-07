@@ -34,9 +34,9 @@ export const profilePicture = {
 
 export const updateAccount = {
   body: Joi.object({
-    userName:Joi.string().min(2).required().min(3).max(99),
-    email:Joi.string().email().required(),
-    newPassword:Joi.string().min(3).required().min(3).max(99),
+    userName:Joi.string().min(2).min(3).max(99),
+    email:Joi.string().email(),
+    newPassword:Joi.string().min(3).min(3).max(99),
     gender:Joi.string().valid('male','female','ذكر','انثي'),
   }),
   headers:validation.headers
