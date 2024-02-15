@@ -10,3 +10,9 @@ export const sendMessage = {
     sendTo:Joi.custom(validation.params)
   })
 }
+
+export const deleteMessage = {
+  params:Joi.object({
+    msgId:Joi.custom(validation.params)
+  })
+}

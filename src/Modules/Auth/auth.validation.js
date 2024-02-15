@@ -28,7 +28,7 @@ export const profilePicture = {
     path:Joi.string().required(),
     filename:Joi.string().required(),
     destination:Joi.string().required(),
-  }).options({allowUnknown:true}),
+  }).required().options({allowUnknown:true}),
   headers:validation.headers
 }
 

@@ -8,5 +8,5 @@ const router = Router();
 
 router
 .post('/:sendTo',vld(validationSchema.sendMessage),expressAsyncHandler(MC.sendMessage))
-
+.delete('/:msgId',vld(validationSchema.deleteMessage),expressAsyncHandler(MC.deleteMessage))
 export default router
