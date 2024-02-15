@@ -3,7 +3,8 @@ import expressAsyncHandler from "express-async-handler";
 import * as MC from './message.controller.js'
 import * as validationSchema from './message.validation.js'
 import vld from './../../Middlewares/validation.js';
-import { auth } from "../index.routers.js";
+import auth from "../../Middlewares/auth.middleware.js";
+
 
 const router = Router();
 

@@ -21,7 +21,8 @@ export const sendMessage = async (req,res,next)=>{
 
 export const deleteMessage = async (req,res,next)=>{
   const {msgId} = req.params
-  const message = await Message.findOneAndDelete({_id:msgId,sendTo:req.user.id})
+  const {id} = req.user
+  const message = await Message.findOneAndDelete({_id:msgId,sendTo:id})
   if(!message) return next(new Error('delete message fail ',{cause:400}))
   res.status(200).json({
     message: 'Deleted Message Successfully',
