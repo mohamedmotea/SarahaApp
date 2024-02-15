@@ -129,7 +129,7 @@ export const updateAccount = async (req, res,next) => {
   const { userName, email, newPassword, gender } = req.body;
   const {id} = req.user
   const user = await User.findById(id)
-  if(email && email.length > 0) {
+  if(email && email != user.email && email.length > 0) {
     const check = await User.findOne({email})
     if(check) return res.status(409).json({message:'email is already exist',success: false});
     // verify the email

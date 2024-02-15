@@ -14,5 +14,6 @@ export const sendMessage = {
 export const deleteMessage = {
   params:Joi.object({
     msgId:Joi.custom(validation.params)
-  })
+  }),
+  headers:validation.headers
 }
