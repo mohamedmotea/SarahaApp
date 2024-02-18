@@ -82,7 +82,7 @@ export const signIn = async (req, res, next) => {
     `,
   });
   if (!sendCode) return res.status(400).json({message:'email verification is not valid',success: false}) ;
-  return res.status(200).json({message:'verfiy account , check your email',success: false})
+  return next(new Error('verfiy account , check your email',{cause:400}))
   } 
 
   // create token
