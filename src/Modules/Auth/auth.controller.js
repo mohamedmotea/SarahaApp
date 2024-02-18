@@ -66,6 +66,7 @@ export const signIn = async (req, res, next) => {
   const isMatch = bcrypt.compareSync(password, user.password);
   if (!isMatch)  return res.status(400).json({message:'check you type of password',success: false});
   // verify the email verification
+
   if(!user.isEmailVerified ) {
     // verify the email
   const emailToken = jwt.sign({ email }, process.env.VERIFICATION, {
@@ -80,9 +81,10 @@ export const signIn = async (req, res, next) => {
     <a href="https://sarahaapp-bhyh.onrender.com/api/v1/auth/verify/${emailToken}">verify</a>
     `,
   });
-  if (!sendCode)
-    return res.status(400).json({message:'email verification is not valid',success: false}) ;
+  if (!sendCode) return res.status(400).json({message:'email verification is not valid',success: false}) ;
+  return res.status(200).json({message:'verfiy account , check your email',success: false})
   } 
+
   // create token
   const token = jwt.sign(
     {
